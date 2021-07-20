@@ -1,0 +1,37 @@
+<div class="table-container form-container">
+    <h2>View/Edit Your Lists</h2>
+    <form>
+        <label for="userList">Select your list:</label>
+        <select id="userList" name="userList" onchange="fetchUserLists(this.value)">
+            <option value="">Click to select...</option>
+            {{#each user.lists}}
+            <option value={{@key}}>{{@key}}</option>
+            {{/each}}
+        </select>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th id="bookRank">Rank</th>
+                <th id="bookCover">Book Cover</th>
+                <th id="bookTitle">Title</th>
+                <th id="bookAuthor">Author</th>
+                <th id="bookDetails">Book Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each books}}
+            <tr>
+                <td headers="bookRank">{{this.rank}}</td>
+                <td headers="bookCover"><a href={{this.amazon_product_url}} target="_blank"><img src={{this.img}} height="192" width="128"></a></td>
+                <td headers="bookTitle">{{this.title}}</td>
+                <td headers="bookAuthor">{{this.author}}</td>
+                <td headers="bookDetails">{{this.details}}</td>
+                <td><input class="modal-open" data-modal="edit-customer-modal" type="submit" value="Add to List" onclick="setDefaults(this)"></td>
+                <td><input class="deleteProduct" type="submit" value="Delete" onclick="deleteRowAJAX(this)"></td>
+                <td><input class="modal-open" data-modal="edit-product-modal" type="submit" value="Edit" onclick="setDefaults(this)"></td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
