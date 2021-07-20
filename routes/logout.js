@@ -6,12 +6,8 @@ const User = connection.models.User;
 require('../config/passport');
 
 router.get('/', async (req, res, next) => {
-    res.render('login');
+    req.logout();
+    res.redirect('/login');
 });
-
-router.post('/', passport.authenticate('local', { 
-    successRedirect: '/my_lists', 
-    failureRedirect: '/login', 
-}));
 
 module.exports = router;

@@ -110,6 +110,13 @@ router.get('/', async (req, res, next) => {
     
     let context = {};
 
+    // set username if user is logged in
+    try {
+        context.username = req.user.first_name + " " + req.user.last_name;
+    } catch(err) {
+        context.username = "Guest";
+    }
+
     // set category name for data
     let category = "combined-print-and-e-book-fiction";
     if (req.query.category) {
