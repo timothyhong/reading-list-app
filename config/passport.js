@@ -16,15 +16,15 @@ const verifyCallback = (username, password, done) => {
 
             // invalid username
             if (!user) {
-                return done(null, false, { message: 'Incorrect username.' }); 
+                return done(null, false, { message: `${username} is not a valid user.` }); 
             }
             
             // invalid password
             if (!validPassword(password, user.hash, user.salt)) {
-                return done(null, false, { message: 'Incorrect password.' });
+                return done(null, false, { message: 'Invalid password.' });
             }
             // user found and password matches
-            return done(null, user);
+            return done(null, user, { message: 'Login successful.'});
         })
         .catch((err) => {
             return done(err);

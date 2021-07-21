@@ -7,6 +7,8 @@ const session = require('express-session');
 const passport = require('passport');
 require('./config/passport');
 const crypto = require('crypto');
+const flash = require('connect-flash');
+const cookieParser = require('cookie-parser');
 
 // imports for MongoDB
 const connection = require('./config/database');
@@ -19,6 +21,8 @@ require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+app.use(cookieParser());
 
 app.use(session({
     secret: process.env.SECRET,
@@ -37,6 +41,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 
 require("./startup/routes")(app);
 

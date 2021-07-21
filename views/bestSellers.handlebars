@@ -1,5 +1,10 @@
-<p>Welcome, {{username}}!</p>
+{{#if user}}
+<p>Welcome, {{user.first_name}} {{user.last_name}}!</p>
 <a href="/logout">Logout</a>
+{{else}}
+<p>Welcome, guest!</p>
+<a href="/login">Login</a>
+{{/if}}
 <div class="form-container">
     <h2>Browse the NYT Best Sellers by Category</h2>
     <form>

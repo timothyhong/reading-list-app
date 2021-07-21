@@ -1,17 +1,14 @@
 const router = require('express').Router();
-const fetch = require('node-fetch');
 const passport = require('passport');
-const connection = require('../config/database');
-const User = connection.models.User;
-require('../config/passport');
 
-router.get('/', async (req, res, next) => {
-    res.render('login');
+router.get('/', (req, res, next) => {
+    res.render('login', {message: req.flash('error')});
 });
 
 router.post('/', passport.authenticate('local', { 
     successRedirect: '/my_lists', 
     failureRedirect: '/login', 
+    failureFlash: true
 }));
 
 module.exports = router;

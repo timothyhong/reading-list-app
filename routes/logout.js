@@ -1,13 +1,8 @@
 const router = require('express').Router();
-const fetch = require('node-fetch');
-const passport = require('passport');
-const connection = require('../config/database');
-const User = connection.models.User;
-require('../config/passport');
 
-router.get('/', async (req, res, next) => {
+router.get('/', (req, res, next) => {
     req.logout();
-    res.redirect('/login');
+    res.render('login', {message: "You have successfully logged out!"});
 });
 
 module.exports = router;

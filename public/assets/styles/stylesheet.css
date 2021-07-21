@@ -284,3 +284,8 @@ form:invalid {
 input:required:invalid, select:required:invalid {
   border-color: #ffdddd;
 }
+
+.alert {
+  background-color: red;
+  color: white;
+}
