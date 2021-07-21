@@ -6,8 +6,8 @@
         <label for="userList">Select your list:</label>
         <select id="userList" name="userList" onchange="fetchUserLists(this.value)">
             <option value="">Click to select...</option>
-            {{#each user.lists}}
-            <option value={{@key}}>{{@key}}</option>
+            {{#each list_names}}
+            <option value={{@key}}>{{this}}</option>
             {{/each}}
         </select>
     </form>

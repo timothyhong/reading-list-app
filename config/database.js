@@ -15,9 +15,12 @@ const UserSchema = new mongoose.Schema({
     email_address: String,
     first_name: String,
     last_name: String,
+    lists: [{
+        list_name: String,
+        list_isbns: [String],
+    }],
     hash: String,
     salt: String,
-    userLists: {},
 });
 
 

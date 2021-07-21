@@ -26,6 +26,15 @@ router.post('/', (req, res, next) => {
                     email_address: req.body.email_address,
                     first_name: req.body.first_name,
                     last_name: req.body.last_name,
+                    lists: [
+                    {
+                        "list_name": "test_list_1",
+                        "list_isbns": ["9124535322", "1243532342"]
+                    }, 
+                    {
+                        "list_name": "test_list_2",
+                        "list_isbns": ["1233253543"]
+                    }],
                     hash: hash,
                     salt: salt
                 });
