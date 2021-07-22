@@ -1,8 +1,5 @@
 const mongoose = require('mongoose');
-
 require('dotenv').config();
-
-//-------------- DATABASE ----------------
 const conn = process.env.DB_STRING;
 
 const connection = mongoose.createConnection(conn, {
@@ -22,7 +19,6 @@ const UserSchema = new mongoose.Schema({
     hash: String,
     salt: String,
 });
-
 
 const User = connection.model('User', UserSchema);
 

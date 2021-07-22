@@ -53,6 +53,17 @@ function closeNav() {
   document.getElementById("sidenav-open").style.display = "block";
 }
 
+// redirect to category page
+function fetchBooksByCategory(category) {
+    window.location = `/best_sellers?category=${category}`;
+}
+
+// fetches user list
+function fetchUserList(listName) {
+    window.location = `/my_lists?list_name=${listName}`
+}
+
+/*
 // redirects to add new product type code page
 function addNewReferenceType(event) {
   if (event.target.value === "Add New Product Type" || event.target.value === "Add New Payment Type") {
@@ -283,3 +294,5 @@ function fromUSDtoFloat(value) {
         return 0;
     }
 }
+
+*/
