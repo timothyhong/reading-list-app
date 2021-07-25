@@ -58,9 +58,36 @@ function fetchBooksByCategory(category) {
     window.location = `/best_sellers?category=${category}`;
 }
 
-// fetches user list
-function fetchUserList(listName) {
-    window.location = `/my_lists?list_name=${listName}`
+async function addToFavorites(row) {
+    let data = {};
+
+    const cells = row.querySelectorAll("[headers]");
+
+    Array.prototype.forEach.call(cells, cell => {
+        if (cell.getAttribute("headers") == "cover") {
+            let amazon_product_url = cell.firstChild.getAttribute("href");
+            let img = cell.firstChild.firstChild.getAttribute("src");
+
+            data.amazon_product_url = amazon_product_url;
+            data.img = img;
+        }
+        else if (cell.getAttribute("headers") != "rank") {
+            data[cell.getAttribute("headers")] = cell.innerHTML;
+        }
+    });
+
+    try {
+        let response = await fetch('/favorites/add', {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data),
+        });
+    } catch(err) {
+        console.log(err);
+        console.log("Error adding to favorites!");
+    }
 }
 
 /*

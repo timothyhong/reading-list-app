@@ -6,7 +6,7 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/', passport.authenticate('local', { 
-    successRedirect: '/my_lists', 
+    successRedirect: '/favorites', 
     failureRedirect: '/login', 
     failureFlash: true
 }));

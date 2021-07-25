@@ -1,21 +1,9 @@
-<div class="form-container">
-    <h2>Browse the NYT Best Sellers by Category</h2>
-    <form>
-        <label for="category">Select a Category:</label>
-        <select id="category" name="category" onchange="fetchBooksByCategory(this.value)">
-            <option value="">Click to select...</option>
-            {{#each categories}}
-            <option value={{@key}}>{{this}}</option>
-            {{/each}}
-        </select>
-    </form>
-</div>
 <div class="table-container form-container">
-    <h2>Displaying Best Sellers in {{selectedCategory}}</h2>
+    <h2></h2>
     <table>
         <thead>
             <tr>
-                <th id="rank">Rank</th>
+                <th id="number">No.</th>
                 <th id="cover">Book Cover</th>
                 <th id="title">Title</th>
                 <th id="author">Author</th>
@@ -24,15 +12,15 @@
             </tr>
         </thead>
         <tbody>
-            {{#each books}}
+            {{#each favorites}}
             <tr>
-                <td headers="rank">{{this.rank}}</td>
+                <td headers="number">{{@index}}</td>
                 <td headers="cover"><a href={{this.amazon_product_url}} target="_blank"><img src={{this.img}} height="192" width="128"></a></td>
                 <td headers="title">{{this.title}}</td>
                 <td headers="author">{{this.author}}</td>
                 <td headers="isbn">{{this.isbn}}</td>
                 <td headers="details">{{this.details}}</td>
-                <td><input type="submit" value="Favorite" onclick="addToFavorites(this.parentElement.parentElement)"></td>
+                <td><input class="deleteProduct" type="submit" value="Delete" onclick="deleteRowAJAX(this)"></td>
             </tr>
             {{/each}}
         </tbody>

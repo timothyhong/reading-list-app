@@ -7,10 +7,15 @@
 			<li class="closebtn" onclick="closeNav()">&times;</li>
 			<li><a href="/">Home</a></li>
 			<li><a href="/register">Register</a><li>
+			{{#if user}}
+			<li><a href="/logout">Logout</a></li>
+			{{else}}
 			<li><a href="/login">Login</a></li>
+			{{/if}}		
 			<li><a href="/best_sellers">Browse NYT Best Sellers</a></li>
-			<li><a href="/my_lists">My Lists</a></li>
+			<li><a href="/favorites">My Favorites</a></li>
 			<li><a href="/about">About</a></li>
+
 		</ul>
 	</div>
 </nav>

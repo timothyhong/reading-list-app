@@ -1,5 +1,10 @@
-<header class="push">
+<header class="header push">
 	<a href = "/">
 		<h1>Reading App</h1>
 	</a>
+	{{#if user}}
+	<p>Welcome, {{user.first_name}}! Click <a href="/logout">here</a> to logout.</p>
+	{{else}}
+	<p>Welcome, Guest! Click <a href="/login">here</a> to login.</p>
+	{{/if}}
 </header>

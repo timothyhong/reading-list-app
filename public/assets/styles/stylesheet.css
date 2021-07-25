@@ -85,17 +85,18 @@ body {
   font-size: 15px;
 }
 
-.footer {
+.footer, .header{
+  color:  white;
   text-align: center;
   flex-shrink: 0;
-  font-size: 10px;
+  font-size: 12px;
 }
 
-.footer p {
+.footer p, .header p{
   background-color: #4D4D4D;
 }
 
-.footer a {
+.footer a, .header a{
   color: white;
 }
 

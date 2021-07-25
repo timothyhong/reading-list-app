@@ -16,24 +16,18 @@ async function getCategories() {
         });
         let data = await response.json();
 
-        try {
-            data.results.forEach(result => {
+        data.results.forEach(result => {
             categories[result.list_name_encoded] = result.display_name;
-            });
-        } catch(err) {
-            console.log("Empty result set in best seller categories.");
-        }
-        return categories;
+        });
     } catch(err) {
         console.log("NYT API error fetching best seller categories.");
     }
+    return categories;
 }
 
 // returns a dictionary of all books from a specific NYT Best Sellers list
 // e.g. {0: {title: title1, author: author1, isbn: isbn1, amazon_product_url: amazon_product_url1}, ...}
 async function getBooksFromList(category) {
-
-    let books = {}
 
     try {
         let response = await fetch(`https://api.nytimes.com/svc/books/v3/lists.json?list=${category}&api-key=${NYT_KEY}`, {
@@ -53,17 +47,15 @@ async function getBooksFromList(category) {
                     "amazon_product_url": result.amazon_product_url
                 };
 
-                
-                let img = await getBookCover(result.book_details[0].primary_isbn13);
-
+                let img = await getBookCover(result.book_details[0].primary_isbn13); 
                 book.img = img;
-
                 return book;
             })
         );
         return books;
     } catch(err) {
         console.log("NYT API error fetching best sellers.");
+        return [];
     }
 }
 
@@ -120,7 +112,12 @@ router.get('/', async (req, res, next) => {
 
     context.categories = await getCategories();
     context.books = await getBooksFromList(category);
-    context.selectedCategory = await context.categories[category];
+    try {
+        context.selectedCategory = await context.categories[category];        
+    } catch(err) {
+        context.selectedCategory = "No categories found.";
+    }
+
     if (context.books.length > 0 && Object.keys(context.categories).length != 0) {
         res.render('bestSellers', context);       
     }
@@ -136,6 +133,7 @@ router.get('/', async (req, res, next) => {
 
 router.use((err, req, res, next) => {
     context = {"error": "Something went wrong."};
+    console.log(err);
     res.render("error", context);
 });
 
