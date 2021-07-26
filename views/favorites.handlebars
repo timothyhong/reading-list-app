@@ -1,5 +1,6 @@
 <div class="table-container form-container">
-    <h2>My Favorite Best Sellers</h2>
+    <h2>My Favorites</h2>
+    {{#if favorites}}
     <table>
         <thead>
             <tr>
@@ -25,4 +26,8 @@
             {{/each}}
         </tbody>
     </table>
+    {{else}}
+    <p>You don't have any favorites yet!</p>
+    <p>Click <a href="/best_sellers">here</a> to add some.</p>
+    {{/if}}
 </div>

@@ -1,33 +1,22 @@
 const router = require('express').Router();
-const fetch = require('node-fetch');
-const passport = require('passport');
 const genPassword = require('../lib/passwordUtils').genPassword;
 const connection = require('../config/database');
 const User = connection.models.User;
+const createUserContext = require('../lib/helpers').createUserContext;
 
 router.get('/', async (req, res, next) => {
-    let context = {};
-
-    // set first and last name for display
-    if (req.user) {
-        context.user = {}
-        if (req.user.first_name) {
-            context.user.first_name = req.user.first_name;            
-        }
-        if (req.user.last_name) {
-            context.user.last_name = req.user.last_name;            
-        }
-    }
+    let context = createUserContext(req);
     res.render('register', context);
 });
 
 router.post('/', (req, res, next) => {
 
+    let context = createUserContext(req);
     // verify user email_address is not already in use
     User.findOne({ email_address: req.body.email_address })
         .then((user) => {
 
-            // invalid username
+            // user doesn't exist -> create account
             if (!user) {
                 const saltHash = genPassword(req.body.password);
 
@@ -47,14 +36,18 @@ router.post('/', (req, res, next) => {
                     console.log(user);
                 });
 
-                res.render('login', {success: "Successfully registered! Please log in."});
+                context.success = "Successfully registered! Please log in.";
+
+                res.render('login', context);
             }
             else {
-                res.render("register", {error: "User already exists. Please register with another email address or <a href='login'>log in.</a>"});
+                context.error = "User already exists. Please register with another email address or <a href='login'>log in.</a>";
+                res.render("register", context);
             }
         })
         .catch((err) => {
-            res.render("register", {error: "Unknown error while registering, please try again!"});
+            context.error = "Unknown error while registering, please try again!";
+            res.render("register", context);
         });
 });
 

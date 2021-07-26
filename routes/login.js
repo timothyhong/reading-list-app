@@ -1,8 +1,11 @@
 const router = require('express').Router();
 const passport = require('passport');
+const createUserContext = require('../lib/helpers').createUserContext;
 
 router.get('/', (req, res, next) => {
-    res.render('login', {error: req.flash('error')});
+    let context = createUserContext(req);
+    context.error = req.flash('error');
+    res.render('login', context);
 });
 
 router.post('/', passport.authenticate('local', { 

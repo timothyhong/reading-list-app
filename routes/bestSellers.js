@@ -1,8 +1,8 @@
-require('dotenv').config();
 const router = require('express').Router();
 const fetch = require('node-fetch');
 const NYT_KEY = process.env.NYT_KEY;
 const GOOGLE_BOOKS_KEY = process.env.GOOGLE_BOOKS_KEY;
+const createUserContext = require('../lib/helpers').createUserContext;
 
 // returns a dictionary of all categories from the NYT Best Sellers API
 // e.g. {list_name_encoded: display_name, ...}
@@ -91,19 +91,7 @@ async function getBookCover(isbn) {
 
 router.get('/', async (req, res, next) => {
     
-    let context = {};
-
-    // set first and last name for display
-    if (req.user) {
-        context.user = {}
-        if (req.user.first_name) {
-            context.user.first_name = req.user.first_name;            
-        }
-        if (req.user.last_name) {
-            context.user.last_name = req.user.last_name;            
-        }
-    }
-
+    let context = createUserContext(req);
     // set category name for data
     let category = "combined-print-and-e-book-fiction";
     if (req.query.category) {
