@@ -58,7 +58,7 @@ function fetchBooksByCategory(category) {
     window.location = `/best_sellers?category=${category}`;
 }
 
-async function addToFavorites(row) {
+async function favorite(row) {
     let data = {};
 
     const cells = row.querySelectorAll("[headers]");
@@ -90,6 +90,30 @@ async function addToFavorites(row) {
         }
     } catch (err) {
         window.alert("Error adding to favorites!");
+    }
+}
+
+async function unfavorite(row) {
+    let data = {};
+    let isbn = row.querySelector("[headers='isbn']").innerHTML;
+    console.log(isbn);
+    data.isbn = isbn;
+
+    try {
+        let response = await fetch('/favorites/remove', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data),
+        });
+
+        if (response.status == 200) {
+            row.parentNode.removeChild(row);
+            window.alert("Successfully removed!");
+        }
+    } catch (err) {
+        window.alert("Error removing from favorites!");
     }
 }
 

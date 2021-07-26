@@ -4,7 +4,8 @@ const conn = process.env.DB_STRING;
 
 const connection = mongoose.createConnection(conn, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false,
 });
 
 // Schema for storing favorite books

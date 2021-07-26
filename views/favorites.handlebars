@@ -21,7 +21,7 @@
                 <td headers="author">{{this.author}}</td>
                 <td headers="isbn">{{this.isbn}}</td>
                 <td headers="details">{{this.details}}</td>
-                <td><input class="deleteProduct" type="submit" value="Delete" onclick="deleteRowAJAX(this)"></td>
+                <td><input class="unfavorite" type="submit" value="Unfavorite" onclick="unfavorite(this.parentElement.parentElement)"></td>
             </tr>
             {{/each}}
         </tbody>

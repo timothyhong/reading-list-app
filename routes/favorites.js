@@ -34,4 +34,16 @@ router.post('/add', connectEnsureLogin.ensureLoggedIn(), (req, res, next) => {
     });
 });
 
+router.post('/remove', connectEnsureLogin.ensureLoggedIn(), (req, res, next) => {
+
+    let query = { email_address: req.user.email_address };
+
+    User.findOneAndUpdate(query, { $pull: { favorites: { isbn: req.body.isbn }}}, {new: true}).then(() => {
+        res.sendStatus(200);
+    }).catch(err => {
+        console.log(err);
+        res.sendStatus(500);
+    });
+});
+
 module.exports = router;
