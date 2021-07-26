@@ -38,15 +38,7 @@ router.post('/', (req, res, next) => {
                     email_address: req.body.email_address,
                     first_name: req.body.first_name,
                     last_name: req.body.last_name,
-                    lists: [
-                    {
-                        "list_name": "test_list_1",
-                        "list_isbns": ["9124535322", "1243532342"]
-                    }, 
-                    {
-                        "list_name": "test_list_2",
-                        "list_isbns": ["1233253543"]
-                    }],
+                    favorites: [],
                     hash: hash,
                     salt: salt
                 });
@@ -55,14 +47,14 @@ router.post('/', (req, res, next) => {
                     console.log(user);
                 });
 
-                res.redirect('/login');
+                res.render('login', {success: "Successfully registered! Please log in."});
             }
             else {
-                res.render("register", {message: "User already exists. Please register with another email address or <a href='login'>log in.</a>"});
+                res.render("register", {error: "User already exists. Please register with another email address or <a href='login'>log in.</a>"});
             }
         })
         .catch((err) => {
-            res.render("register", {message: "Unknown error while registering, please try again!"});
+            res.render("register", {error: "Unknown error while registering, please try again!"});
         });
 });
 

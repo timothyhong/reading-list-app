@@ -1,8 +1,15 @@
 <div class="form-container">
     <h2>Register</h2>
     <p>Sign up for an account (please fill out all fields):</p>
-    <div class="alert">
-        <p>{{{message}}}</p>
+    <div class="error">
+        {{#if error}}
+        <p>{{{error}}}</p>
+        {{/if}}
+    </div>
+    <div class="success">
+        {{#if success}}
+        <p>{{{success}}}</p>
+        {{/if}}
     </div>
     <form method="post" action="/register">
         <fieldset>

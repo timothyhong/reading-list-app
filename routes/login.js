@@ -2,7 +2,7 @@ const router = require('express').Router();
 const passport = require('passport');
 
 router.get('/', (req, res, next) => {
-    res.render('login', {message: req.flash('error')});
+    res.render('login', {error: req.flash('error')});
 });
 
 router.post('/', passport.authenticate('local', { 

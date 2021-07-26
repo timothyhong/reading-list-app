@@ -1,8 +1,15 @@
 <div class="form-container">
     <h2>Login</h2>
     <p>Or sign up for an account by clicking <a href="/register">here</a></p>
-    <div class="alert">
-        <p>{{{message}}}</p>
+    <div class="error">
+        {{#if error}}
+        <p>{{{error}}}</p>
+        {{/if}}
+    </div>
+    <div class="success">
+        {{#if success}}
+        <p>{{{success}}}</p>
+        {{/if}}
     </div>
     <form method="post" action="/login">
         <fieldset>

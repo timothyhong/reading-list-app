@@ -78,15 +78,18 @@ async function addToFavorites(row) {
 
     try {
         let response = await fetch('/favorites/add', {
-                method: 'post',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data),
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data),
         });
-    } catch(err) {
-        console.log(err);
-        console.log("Error adding to favorites!");
+
+        if (response.status == 200) {
+            window.alert("Successfully added!");
+        }
+    } catch (err) {
+        window.alert("Error adding to favorites!");
     }
 }
 

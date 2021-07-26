@@ -24,8 +24,6 @@ router.get('/', connectEnsureLogin.ensureLoggedIn(), (req, res, next) => {
 });
 
 router.post('/add', connectEnsureLogin.ensureLoggedIn(), (req, res, next) => {
-    // add req.body to favorites using mongoose
-    console.log(req.body);
 
     let favorite = new Favorite({
         title: req.body.title,
@@ -38,10 +36,11 @@ router.post('/add', connectEnsureLogin.ensureLoggedIn(), (req, res, next) => {
 
     let query = { email_address: req.user.email_address };
 
-    User.updateOne(query, {$addToSet: {favorites: favorite}}).then(doc => {
-        console.log(doc);
+    User.updateOne(query, {$addToSet: {favorites: favorite}}).then(() => {
+        res.sendStatus(200);
     }).catch(err => {
         console.log(err);
+        res.sendStatus(500);
     });
 });
 

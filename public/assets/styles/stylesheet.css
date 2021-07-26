@@ -286,7 +286,12 @@ input:required:invalid, select:required:invalid {
   border-color: #ffdddd;
 }
 
-.alert {
+.error {
   background-color: red;
+  color: white;
+}
+
+.success {
+  background-color: limegreen;
   color: white;
 }
