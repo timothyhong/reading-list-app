@@ -1,15 +1,15 @@
 <div class="form-container">
     <h2>Register</h2>
-    <p>Sign up for an account:</p>
+    <p>Sign up for an account (please fill out all fields):</p>
     <div class="alert">
         <p>{{{message}}}</p>
     </div>
     <form method="post" action="/register">
         <fieldset>
             <label for="firstName">First Name</label>
-            <input class="user-input" type="text" id="firstName" name="first_name">
+            <input class="user-input" type="text" id="firstName" name="first_name" required>
             <label for="lastName">Last Name</label>
-            <input class="user-input" type="text" id="lastName" name="last_name">
+            <input class="user-input" type="text" id="lastName" name="last_name" required>
             <label for="emailAddress">Email Address</label>
             <input class="user-input" type="email" id="emailAddress" name="email_address" required>
             <label for="password">Password</label>

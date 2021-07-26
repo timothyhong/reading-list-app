@@ -15,7 +15,7 @@ const FavoriteSchema = new mongoose.Schema({
     details: String,
     img: String,
     amazon_product_url: String,
-});
+}, { _id: false});
 
 // Schema for storing user info. The hash and salt are derived from the user's given password when they register
 const UserSchema = new mongoose.Schema({

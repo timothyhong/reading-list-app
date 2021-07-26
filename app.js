@@ -45,5 +45,10 @@ app.use(flash());
 
 require("./startup/routes")(app);
 
+// increments index to display numbering for favorites list
+handlebars.handlebars.registerHelper("inc", (value) => {
+    return parseInt(value) + 1;
+});
+
 app.listen(port, () => console.log(`Listening on port ${port}...`));
 
