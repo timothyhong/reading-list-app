@@ -32,7 +32,11 @@
                 <td headers="author">{{this.author}}</td>
                 <td headers="isbn">{{this.isbn}}</td>
                 <td headers="details">{{this.details}}</td>
+                {{#if this.favorite}}
+                <td><input type="submit" value="Unfavorite" onclick="unfavorite(this.parentElement.parentElement)"></td>
+                {{else}}
                 <td><input type="submit" value="Favorite" onclick="favorite(this.parentElement.parentElement)"></td>
+                {{/if}}
             </tr>
             {{/each}}
         </tbody>

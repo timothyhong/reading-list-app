@@ -100,6 +100,20 @@ router.get('/', async (req, res, next) => {
 
     context.categories = await getCategories();
     context.books = await getBooksFromList(category);
+
+    // if user's logged in, check which books are favorited (to add proper button)
+    if (req.user && req.user.favorites.length > 0) {
+        let userFavIsbns = req.user.favorites.map((book) => {
+            return book.isbn;
+        });
+        context.books.forEach((book) => {
+            if (userFavIsbns.includes(book.isbn)) {
+                book.favorite = 1;
+            }
+        });
+
+    }
+
     try {
         context.selectedCategory = await context.categories[category];        
     } catch(err) {

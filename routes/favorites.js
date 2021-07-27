@@ -26,8 +26,14 @@ router.post('/add', connectEnsureLogin.ensureLoggedIn(), (req, res, next) => {
 
     let query = { email_address: req.user.email_address };
 
-    User.updateOne(query, {$addToSet: {favorites: favorite}}).then(() => {
-        res.sendStatus(200);
+    User.updateOne(query, {$addToSet: {favorites: favorite}}).then((doc) => {
+        if (doc.nModified == 0) {
+            res.sendStatus(304);
+        } else if (doc.nModified == 1) {
+            res.sendStatus(200);
+        } else {
+            res.sendStatus(500);
+        }
     }).catch(err => {
         console.log(err);
         res.sendStatus(500);
