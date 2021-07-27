@@ -218,10 +218,50 @@ select
   text-transform: uppercase;
 }
 
-.form-container input[type="button"]:hover, 
-.form-container input[type="submit"]:hover {
+input[type="button"], 
+input.favorite[type="submit"] {
+  -moz-box-shadow: inset 0px 1px 0px 0px #45D6D6;
+  -webkit-box-shadow: inset 0px 1px 0px 0px #45D6D6;
+  box-shadow: inset 0px 1px 0px 0px #45D6D6;
+  background-color: #2CBBBB;
+  border: 1px solid #27A0A0;
+  display: inline-block;
+  cursor: pointer;
+  color: #FFFFFF;
+  font-family: 'Open Sans Condensed', sans-serif;
+  font-size: 14px;
+  padding: 8px 18px;
+  text-decoration: none;
+  text-transform: uppercase;
+  width: 100%;
+}
+
+input.unfavorite[type="submit"] {
+  -moz-box-shadow: inset 0px 1px 0px 0px #DE2138;
+  -webkit-box-shadow: inset 0px 1px 0px 0px #DE2138;
+  box-shadow: inset 0px 1px 0px 0px #DE2138;
+  background-color: #BD0B20;
+  border: 1px solid #A60215;
+  display: inline-block;
+  cursor: pointer;
+  color: #FFFFFF;
+  font-family: 'Open Sans Condensed', sans-serif;
+  font-size: 14px;
+  padding: 8px 18px;
+  text-decoration: none;
+  text-transform: uppercase;
+  width: 100%;
+}
+
+input[type="button"]:hover, 
+input.favorite[type="submit"]:hover {
   background:linear-gradient(to bottom, #34CACA 5%, #30C9C9 100%);
   background-color:#34CACA;
+}
+
+input.unfavorite[type="submit"]:hover {
+  background:linear-gradient(to bottom, #D1172D 5%, #D12438 100%);
+  background-color:#D1172D;
 }
 
 /* table styling */

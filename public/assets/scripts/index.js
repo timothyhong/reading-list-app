@@ -64,6 +64,7 @@ async function favorite(row) {
             let input = row.lastElementChild.firstElementChild;
             input.value = "Unfavorite";
             input.setAttribute("onclick", "unfavorite(this.parentElement.parentElement)");
+            input.setAttribute("class", "unfavorite");
 
         } else if (response.status == 304) {
             window.alert("That's already on your favorites list!");
@@ -102,7 +103,8 @@ async function unfavorite(row, removeBool) {
                 // change the button to favorite
                 let input = row.lastElementChild.firstElementChild;
                 input.value = "Favorite";
-                input.setAttribute("onclick", "favorite(this.parentElement.parentElement)"); 
+                input.setAttribute("onclick", "favorite(this.parentElement.parentElement)");
+                input.setAttribute("class", "favorite");
             }
             window.alert("Successfully unfavorited!");
         }
