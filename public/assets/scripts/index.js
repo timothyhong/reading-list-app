@@ -5,7 +5,7 @@ Array.prototype.forEach.call(document.querySelectorAll("input[onclick]"), input 
     })
 });
 
-// navbar open
+// open navbar
 function openNav() {
     document.getElementById("sidenav-menu").style.width = "250px";
     // get all elements to push
@@ -15,7 +15,7 @@ function openNav() {
     document.getElementById("sidenav-open").style.display = "none";
 }
 
-// navbar close
+// clsoe navbar
 function closeNav() {
     document.getElementById("sidenav-menu").style.width = "0";
     // get all elements to push
@@ -25,9 +25,13 @@ function closeNav() {
     document.getElementById("sidenav-open").style.display = "block";
 }
 
-// redirect to category page
+// redirect with the category parameter
 function fetchBooksByCategory(category) {
     window.location = `/best_sellers?category=${category}`;
+}
+
+function loginRedirect() {
+    window.location = `/login`;
 }
 
 // favorite a book
@@ -37,6 +41,7 @@ async function favorite(row) {
     const cells = row.querySelectorAll("[headers]");
 
     Array.prototype.forEach.call(cells, cell => {
+        // extract book cover info
         if (cell.getAttribute("headers") == "cover") {
             let amazon_product_url = cell.firstChild.getAttribute("href");
             let img = cell.firstChild.firstChild.getAttribute("src");
@@ -44,6 +49,7 @@ async function favorite(row) {
             data.amazon_product_url = amazon_product_url;
             data.img = img;
         }
+        // extract all other info excluding rank
         else if (cell.getAttribute("headers") != "rank") {
             data[cell.getAttribute("headers")] = cell.innerHTML;
         }
@@ -59,7 +65,6 @@ async function favorite(row) {
         });
 
         if (response.status == 200) {
-            window.alert("Successfully favorited!");
             // change the button to unfavorite
             let input = row.lastElementChild.firstElementChild;
             input.value = "Unfavorite";
@@ -74,7 +79,7 @@ async function favorite(row) {
     }
 }
 
-// unfavorite a book
+// unfavorite a book by isbn
 async function unfavorite(row, removeBool) {
     let data = {};
     let isbn = row.querySelector("[headers='isbn']").innerHTML;
@@ -106,7 +111,6 @@ async function unfavorite(row, removeBool) {
                 input.setAttribute("onclick", "favorite(this.parentElement.parentElement)");
                 input.setAttribute("class", "favorite");
             }
-            window.alert("Successfully unfavorited!");
         }
     } catch (err) {
         window.alert("Error removing from favorites!");

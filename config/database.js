@@ -8,7 +8,7 @@ const connection = mongoose.createConnection(conn, {
     useFindAndModify: false,
 });
 
-// Schema for storing favorite books
+// favorites list schema
 const FavoriteSchema = new mongoose.Schema({
     title: String,
     author: String,
@@ -18,7 +18,7 @@ const FavoriteSchema = new mongoose.Schema({
     amazon_product_url: String,
 }, { _id: false});
 
-// Schema for storing user info. The hash and salt are derived from the user's given password when they register
+// user schema
 const UserSchema = new mongoose.Schema({
     email_address: String,
     first_name: String,

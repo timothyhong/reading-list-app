@@ -4,6 +4,7 @@ const connection = require('./database');
 const User = connection.models.User;
 const validPassword = require('../lib/passwordUtils').validPassword;
 
+// tells passport what fields to get the username/password from
 const customFields = {
     usernameField: 'email_address',
     passwordField: 'password'
