@@ -1,7 +1,7 @@
 // prevent default for inputs with onclick events
 Array.prototype.forEach.call(document.querySelectorAll("input[onclick]"), input => {
     input.addEventListener('click', e => {
-    event.preventDefault();
+        event.preventDefault();
     })
 });
 

@@ -32,10 +32,8 @@ router.post('/', (req, res, next) => {
                     salt: salt
                 });
 
-                newUser.save().then((user) => {
-                    console.log(user);
-                });
-
+                newUser.save();
+                
                 context.success = "Successfully registered! Please log in.";
 
                 res.render('login', context);

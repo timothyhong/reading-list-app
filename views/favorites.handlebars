@@ -1,7 +1,7 @@
 <div class="table-container form-container">
     <h2>My Favorites</h2>
     {{#if favorites}}
-    <table>
+    <table id="favorites-table" class="draggable-table">
         <thead>
             <tr>
                 <th id="number">No.</th>
@@ -16,7 +16,7 @@
             {{#each favorites}}
             <tr>
                 <td headers="number">{{inc @index}}</td>
-                <td headers="cover"><a href={{this.amazon_product_url}} target="_blank"><img src={{this.img}} height="192" width="128"></a></td>
+                <td headers="cover"><a href={{this.amazon_product_url}} target="_blank"><img src={{this.img}} height="96" width="64"></a></td>
                 <td headers="title">{{this.title}}</td>
                 <td headers="author">{{this.author}}</td>
                 <td headers="isbn">{{this.isbn}}</td>
@@ -31,3 +31,4 @@
     <p>Click <a href="/best_sellers">here</a> to add some.</p>
     {{/if}}
 </div>
+<script src="/assets/scripts/favorites.js"></script>

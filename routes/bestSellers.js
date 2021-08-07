@@ -117,26 +117,20 @@ router.get('/', async (req, res, next) => {
     try {
         context.selectedCategory = await context.categories[category];        
     } catch(err) {
-        context.selectedCategory = "No categories found.";
+        context.selectedCategory = "Selected category could not be found.";
     }
 
     if (context.books.length > 0 && Object.keys(context.categories).length != 0) {
         res.render('bestSellers', context);       
     }
     else if (context.books.length == 0) {
-        context = {"error": "That category could not be located."};
+        context = {"error": "Selected category could not be found."};
         res.render("error", context);       
     }
     else {
         context = {"error": "No categories could be found."};
         res.render("error", context);
     }
-});
-
-router.use((err, req, res, next) => {
-    context = {"error": "Something went wrong."};
-    console.log(err);
-    res.render("error", context);
 });
 
 module.exports = router;
