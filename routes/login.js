@@ -2,6 +2,7 @@ const router = require('express').Router();
 const passport = require('passport');
 const createUserContext = require('../lib/helpers').createUserContext;
 
+// login page
 router.get('/', (req, res, next) => {
     let context = createUserContext(req);
     context.error = req.flash('error');

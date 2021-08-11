@@ -52,7 +52,7 @@
     document.addEventListener('mouseup', (event) => {
       if(!mouseDrag) return;
 
-      if (originalIndex != finalIndex) {
+      if (originalIndex != finalIndex && originalIndex !== null && finalIndex !== null) {
         finalizeSwap(originalIndex, finalIndex);        
       }
 
@@ -90,8 +90,6 @@
          newNode = currIndex > index ? currRow : row,
          referenceNode = currIndex > index ? row : currRow;
 
-     finalIndex = index;
-
      // swap display indices too
      let newNodeIndex = parseInt(newNode.firstElementChild.innerHTML),
      referenceNodeIndex = parseInt(referenceNode.firstElementChild.innerHTML);
@@ -117,6 +115,7 @@
       if (currRow !== rowElem && isIntersecting(currStartY, currEndY, rowStartY, rowEndY)) {
         if(Math.abs(currStartY - rowStartY) < rowSize.height / 2) {
           swapRow(rowElem, i);
+          finalIndex = i;
           // update the index display on dragged row
           dragElem.firstElementChild.innerHTML = i + 1;
         }

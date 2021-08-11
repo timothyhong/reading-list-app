@@ -5,7 +5,7 @@ const GOOGLE_BOOKS_KEY = process.env.GOOGLE_BOOKS_KEY;
 const createUserContext = require('../lib/helpers').createUserContext;
 
 // returns a dictionary of all categories from the NYT Best Sellers API
-// e.g. {list_name_encoded: display_name, ...}
+// e.g. {display_name: list_name_encoded, ...}
 async function getCategories() {
 
     let categories = {};

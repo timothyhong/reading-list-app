@@ -52,6 +52,7 @@ router.post('/remove', connectEnsureLogin.ensureLoggedIn(), (req, res, next) => 
     });
 });
 
+// route to swap item at originalIndex to finalIndex.
 router.post('/swap', connectEnsureLogin.ensureLoggedIn(), (req, res, next) => {
 
     let query = { email_address: req.user.email_address };

@@ -2,7 +2,7 @@
     <h2>Browse the NYT Best Sellers by Category</h2>
     <form>
         <label for="category">Select a Category:</label>
-        <select id="category" name="category" onchange="fetchBooksByCategory(this.value)">
+        <select id="category" name="category" onchange="categoryRedirect(this.value)">
             <option value="">Click to select...</option>
             {{#each categories}}
             <option value={{@key}}>{{this}}</option>

@@ -26,7 +26,7 @@ function closeNav() {
 }
 
 // redirect with the category parameter
-function fetchBooksByCategory(category) {
+function categoryRedirect(category) {
     window.location = `/best_sellers?category=${category}`;
 }
 
@@ -34,10 +34,26 @@ function loginRedirect() {
     window.location = `/login`;
 }
 
-// favorite a book
-async function favorite(row) {
-    let data = {};
+// change button from unfavorite -> favorite
+function buttonToFavorite(row) {
+    let input = row.lastElementChild.firstElementChild;
+    input.value = "Favorite";
+    input.setAttribute("onclick", "favorite(this.parentElement.parentElement)");
+    input.setAttribute("class", "favorite");
+}
 
+// change button from favorite -> unfavorite
+function buttonToUnfavorite(row) {
+    let input = row.lastElementChild.firstElementChild;
+    input.value = "Unfavorite";
+    input.setAttribute("onclick", "unfavorite(this.parentElement.parentElement)");
+    input.setAttribute("class", "unfavorite");
+}
+
+// extract book info from a row
+function getBookFromRow(row) {
+
+    let data = {};
     const cells = row.querySelectorAll("[headers]");
 
     Array.prototype.forEach.call(cells, cell => {
@@ -54,6 +70,13 @@ async function favorite(row) {
             data[cell.getAttribute("headers")] = cell.innerHTML;
         }
     });
+    return data;
+}
+
+// favorite a book
+async function favorite(row) {
+
+    let data = getBookFromRow(row);
 
     try {
         let response = await fetch('/favorites/add', {
@@ -65,12 +88,7 @@ async function favorite(row) {
         });
 
         if (response.status == 200) {
-            // change the button to unfavorite
-            let input = row.lastElementChild.firstElementChild;
-            input.value = "Unfavorite";
-            input.setAttribute("onclick", "unfavorite(this.parentElement.parentElement)");
-            input.setAttribute("class", "unfavorite");
-
+            buttonToUnfavorite(row);
         } else if (response.status == 304) {
             window.alert("That's already on your favorites list!");
         }
@@ -79,7 +97,7 @@ async function favorite(row) {
     }
 }
 
-// unfavorite a book by isbn
+// unfavorite a book by isbn. if removeBool is set, row will also be removed
 async function unfavorite(row, removeBool) {
     let data = {};
     let isbn = row.querySelector("[headers='isbn']").innerHTML;
@@ -105,11 +123,7 @@ async function unfavorite(row, removeBool) {
                 // remove row
                 row.parentNode.removeChild(row);
             } else {
-                // change the button to favorite
-                let input = row.lastElementChild.firstElementChild;
-                input.value = "Favorite";
-                input.setAttribute("onclick", "favorite(this.parentElement.parentElement)");
-                input.setAttribute("class", "favorite");
+                buttonToFavorite(row);
             }
         }
     } catch (err) {
