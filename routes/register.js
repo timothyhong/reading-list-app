@@ -9,9 +9,9 @@ router.get('/', async (req, res, next) => {
     res.render('register', context);
 });
 
-router.post('/', (req, res, next) => {
+router.post('/', async (req, res, next) => {
 
-    let context = createUserContext(req);
+    let context = await createUserContext(req);
     // verify user email_address is not already in use
     User.findOne({ email_address: req.body.email_address })
         .then((user) => {
@@ -33,7 +33,7 @@ router.post('/', (req, res, next) => {
                 });
 
                 newUser.save();
-                
+
                 context.success = "Successfully registered! Please log in.";
 
                 res.render('login', context);

@@ -91,7 +91,7 @@ async function getBookCover(isbn) {
 
 router.get('/', async (req, res, next) => {
     
-    let context = createUserContext(req);
+    let context = await createUserContext(req);
     // set category name for data
     let category = "combined-print-and-e-book-fiction";
     if (req.query.category) {

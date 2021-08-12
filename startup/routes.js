@@ -3,6 +3,7 @@ const cookieParser = require('cookie-parser');
 const handlebars = require('express-handlebars').create({defaultLayout: 'index'});
 
 // imports for user authentication
+const { auth, requiresAuth } = require('express-openid-connect');
 const session = require('express-session');
 const passport = require('passport');
 require('../config/passport');
@@ -45,6 +46,21 @@ module.exports = app => {
     app.use(passport.session());
     app.use(flash());
 
+    app.use(
+      auth({
+        issuerBaseURL: process.env.ISSUER_BASE_URL,
+        baseURL: process.env.BASE_URL,
+        clientID: process.env.CLIENT_ID,
+        secret: process.env.SECRET,
+        idpLogout: true,
+        clientSecret: process.env.CLIENT_SECRET,
+        authRequired: false,
+        authorizationParams: {
+          response_type: 'code',
+          scope: 'openid profile bestSeller.fullaccess IdentityServerApi roles user_data',
+        },
+      })
+    );
 
     app.use("/", require("../routes/index"));
     app.use("/best_sellers", require("../routes/bestSellers"));

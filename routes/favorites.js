@@ -5,15 +5,27 @@ const createUserContext = require('../lib/helpers').createUserContext;
 const User = connection.models.User;
 const Favorite = connection.models.Favorite;
 const mongoose = require('mongoose');
+const passport = require('passport');
+const fetch = require('node-fetch');
+const { auth, requiresAuth } = require('express-openid-connect');
 
-router.get('/', connectEnsureLogin.ensureLoggedIn(), (req, res, next) => {
-    
-    let context = createUserContext(req);
-    context.favorites = req.user.toObject().favorites;
+router.get('/', requiresAuth(), async (req, res, next) => {
+    let context = await createUserContext(req);
+
+    try {
+        let response = await fetch(`${process.env.ISSUER_BASE_URL}/Users/${context.user.id}/Favorites`, {
+              method: 'get',
+        });
+        let favorites = await response.json();
+        context.favorites = favorites;
+    } catch(err) {
+        console.log("Error getting favorites");
+    }
     res.render('favorites', context);
 });
 
-router.post('/add', connectEnsureLogin.ensureLoggedIn(), (req, res, next) => {
+router.post('/add', requiresAuth(), async (req, res, next) => {
+    let context = await createUserContext(req);
 
     let favorite = new Favorite({
         title: req.body.title,
@@ -24,23 +36,36 @@ router.post('/add', connectEnsureLogin.ensureLoggedIn(), (req, res, next) => {
         amazon_product_url: req.body.amazon_product_url,
     });
 
-    let query = { email_address: req.user.email_address };
+    try {
+        let response = await fetch(`${process.env.ISSUER_BASE_URL}/Users/${context.user.id}/Favorites/AddBooks`, {
+            method: 'put',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(favorite),
+        });
+        console.log(await response.json());
+    } catch(err) {
+        console.log("Error adding to favorites");
+    }
 
-    User.updateOne(query, {$addToSet: {favorites: favorite}}).then((doc) => {
-        if (doc.nModified == 0) {
-            res.sendStatus(304);
-        } else if (doc.nModified == 1) {
-            res.sendStatus(200);
-        } else {
-            res.sendStatus(500);
-        }
-    }).catch(err => {
-        console.log(err);
-        res.sendStatus(500);
-    });
+    // let query = { email_address: req.user.email_address };
+
+    // User.updateOne(query, {$addToSet: {favorites: favorite}}).then((doc) => {
+    //     if (doc.nModified == 0) {
+    //         res.sendStatus(304);
+    //     } else if (doc.nModified == 1) {
+    //         res.sendStatus(200);
+    //     } else {
+    //         res.sendStatus(500);
+    //     }
+    // }).catch(err => {
+    //     console.log(err);
+    //     res.sendStatus(500);
+    // });
 });
 
-router.post('/remove', connectEnsureLogin.ensureLoggedIn(), (req, res, next) => {
+router.post('/remove', requiresAuth(), (req, res, next) => {
 
     let query = { email_address: req.user.email_address };
 
@@ -53,7 +78,7 @@ router.post('/remove', connectEnsureLogin.ensureLoggedIn(), (req, res, next) => 
 });
 
 // route to swap item at originalIndex to finalIndex.
-router.post('/swap', connectEnsureLogin.ensureLoggedIn(), (req, res, next) => {
+router.post('/swap', requiresAuth(), (req, res, next) => {
 
     let query = { email_address: req.user.email_address };
     let originalIndex = req.body.originalIndex;
