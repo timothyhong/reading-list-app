@@ -66,7 +66,7 @@ function getBookFromRow(row) {
             data.img = img;
         }
         // extract all other info excluding rank
-        else if (cell.getAttribute("headers") != "rank") {
+        else if (cell.getAttribute("headers") != "rank" && cell.getAttribute("headers") != "number") {
             data[cell.getAttribute("headers")] = cell.innerHTML;
         }
     });
@@ -99,9 +99,8 @@ async function favorite(row) {
 
 // unfavorite a book by isbn. if removeBool is set, row will also be removed
 async function unfavorite(row, removeBool) {
-    let data = {};
-    let isbn = row.querySelector("[headers='isbn']").innerHTML;
-    data.isbn = isbn;
+    let data = getBookFromRow(row);
+    console.log(data);
 
     try {
         let response = await fetch('/favorites/remove', {

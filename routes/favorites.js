@@ -27,80 +27,54 @@ router.get('/', requiresAuth(), async (req, res, next) => {
 router.post('/add', requiresAuth(), async (req, res, next) => {
     let context = await createUserContext(req);
 
-    let favorite = new Favorite({
-        title: req.body.title,
-        author: req.body.author,
-        isbn: req.body.isbn,
-        details: req.body.details,
-        img: req.body.img,
-        amazon_product_url: req.body.amazon_product_url,
-    });
-
     try {
         let response = await fetch(`${process.env.ISSUER_BASE_URL}/Users/${context.user.id}/Favorites/AddBooks`, {
             method: 'put',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(favorite),
+            body: JSON.stringify([req.body]),
         });
-        console.log(await response.json());
+        res.sendStatus(response.status);
     } catch(err) {
-        console.log("Error adding to favorites");
+        console.log("Error adding to favorites", err);
     }
-
-    // let query = { email_address: req.user.email_address };
-
-    // User.updateOne(query, {$addToSet: {favorites: favorite}}).then((doc) => {
-    //     if (doc.nModified == 0) {
-    //         res.sendStatus(304);
-    //     } else if (doc.nModified == 1) {
-    //         res.sendStatus(200);
-    //     } else {
-    //         res.sendStatus(500);
-    //     }
-    // }).catch(err => {
-    //     console.log(err);
-    //     res.sendStatus(500);
-    // });
 });
 
-router.post('/remove', requiresAuth(), (req, res, next) => {
+router.post('/remove', requiresAuth(), async (req, res, next) => {
+    let context = await createUserContext(req);
 
-    let query = { email_address: req.user.email_address };
-
-    User.findOneAndUpdate(query, { $pull: { favorites: { isbn: req.body.isbn }}}, {new: true}).then(() => {
-        res.sendStatus(200);
-    }).catch(err => {
-        console.log(err);
-        res.sendStatus(500);
-    });
+    try {
+        let response = await fetch(`${process.env.ISSUER_BASE_URL}/Users/${context.user.id}/Favorites/RemoveBooks`, {
+            method: 'put',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify([req.body]),
+        });
+        res.sendStatus(response.status);
+    } catch(err) {
+        console.log("Error removing from favorites", err);
+    }
 });
 
 // route to swap item at originalIndex to finalIndex.
-router.post('/swap', requiresAuth(), (req, res, next) => {
+router.post('/swap', requiresAuth(), async (req, res, next) => {
 
-    let query = { email_address: req.user.email_address };
-    let originalIndex = req.body.originalIndex;
-    let finalIndex = req.body.finalIndex;
+    let context = await createUserContext(req);
 
-    User.findOne(query, { favorites: 1 }).then((fav) => {
-        let originalNode = fav.favorites[originalIndex];
-        if (originalIndex > finalIndex) {
-            fav.favorites.splice(finalIndex, 0, originalNode);
-            fav.favorites.splice(originalIndex + 1, 1);
-        } else {
-            fav.favorites.splice(finalIndex + 1, 0, originalNode);
-            fav.favorites.splice(originalIndex, 1);
-        }
-        return fav.favorites
-    }).then((res) => User.findOneAndUpdate(query, { $set: { favorites: res }}, { overwrite: true }))
-    .then(() => {
-        res.sendStatus(200);            
-    }).catch(err => {
-        console.log(err);
-        res.sendStatus(500);
-    });
+    try {
+        let response = await fetch(`${process.env.ISSUER_BASE_URL}/Users/${context.user.id}/Favorites/UpdateBooks`, {
+            method: 'put',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(req.body),
+        });
+        res.sendStatus(response.status);
+    } catch(err) {
+        console.log("Error swapping favorites", err);
+    }
 })
 
 module.exports = router;

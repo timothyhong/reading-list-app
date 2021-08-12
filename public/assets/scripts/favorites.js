@@ -53,7 +53,8 @@
       if(!mouseDrag) return;
 
       if (originalIndex != finalIndex && originalIndex !== null && finalIndex !== null) {
-        finalizeSwap(originalIndex, finalIndex);        
+        // finalizeSwap(originalIndex, finalIndex);
+        sendAllFavorites();
       }
 
       currRow.classList.remove('is-dragging');
@@ -63,6 +64,51 @@
       mouseDrag = false;
 
     });    
+  }
+
+  // extract book info from a row
+  function getBookFromRow(row) {
+
+      let data = {};
+      const cells = row.querySelectorAll("[headers]");
+
+      Array.prototype.forEach.call(cells, cell => {
+          // extract book cover info
+          if (cell.getAttribute("headers") == "cover") {
+              let amazon_product_url = cell.firstChild.getAttribute("href");
+              let img = cell.firstChild.firstChild.getAttribute("src");
+
+              data.amazon_product_url = amazon_product_url;
+              data.img = img;
+          }
+          // extract all other info excluding rank
+          else if (cell.getAttribute("headers") != "rank" && cell.getAttribute("headers") != "number") {
+              data[cell.getAttribute("headers")] = cell.innerHTML;
+          }
+      });
+      return data;
+  }
+
+  async function sendAllFavorites() {
+    let rows = getRows();
+    let data = [];
+    Array.prototype.forEach.call(rows, (row) => {
+      data.push(getBookFromRow(row));
+    });
+    console.log(data);
+    
+    try {
+        let response = await fetch('/favorites/swap', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data),
+        });
+    } catch (err) {
+      window.alert("Error swapping rows.");
+      console.log(err);
+    }
   }
 
   async function finalizeSwap(originalIndex, finalIndex) {
