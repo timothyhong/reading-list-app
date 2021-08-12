@@ -40,6 +40,7 @@ function buttonToFavorite(row) {
     input.value = "Favorite";
     input.setAttribute("onclick", "favorite(this.parentElement.parentElement)");
     input.setAttribute("class", "favorite");
+    input.style.backgroundColor = "#2CBBBB";
 }
 
 // change button from favorite -> unfavorite
@@ -48,6 +49,7 @@ function buttonToUnfavorite(row) {
     input.value = "Unfavorite";
     input.setAttribute("onclick", "unfavorite(this.parentElement.parentElement)");
     input.setAttribute("class", "unfavorite");
+    input.style.backgroundColor = "#BD0B20";
 }
 
 // extract book info from a row

@@ -90,9 +90,10 @@ async function getBookCover(isbn) {
 }
 
 router.get('/', async (req, res, next) => {
-    
-    let context = await createUserContext(req);
+
     // set category name for data
+    let context = await createUserContext(req);
+
     let category = "combined-print-and-e-book-fiction";
     if (req.query.category) {
         category = req.query.category;
@@ -100,7 +101,7 @@ router.get('/', async (req, res, next) => {
 
     context.categories = await getCategories();
     context.books = await getBooksFromList(category);
-
+        
     // if user's logged in, check which books are favorited (to add proper button)
     if (context.user) {
 
