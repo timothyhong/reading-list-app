@@ -73,12 +73,21 @@ function getBookFromRow(row) {
     return data;
 }
 
+// change button to Pending...
+function buttonToPending(row) {
+    let input = row.lastElementChild.firstElementChild;
+    input.value = "Pending...";
+    input.removeAttribute("onclick");
+    input.style.backgroundColor = "gray";
+}
+
 // favorite a book
 async function favorite(row) {
 
     let data = getBookFromRow(row);
 
     try {
+        buttonToPending(row);
         let response = await fetch('/favorites/add', {
             method: 'post',
             headers: {
@@ -89,8 +98,8 @@ async function favorite(row) {
 
         if (response.status == 200) {
             buttonToUnfavorite(row);
-        } else if (response.status == 304) {
-            window.alert("That's already on your favorites list!");
+        } else {
+            console.log(response.status);
         }
     } catch (err) {
         window.alert("Error adding to favorites!");
@@ -100,9 +109,9 @@ async function favorite(row) {
 // unfavorite a book by isbn. if removeBool is set, row will also be removed
 async function unfavorite(row, removeBool) {
     let data = getBookFromRow(row);
-    console.log(data);
 
     try {
+        buttonToPending(row);
         let response = await fetch('/favorites/remove', {
             method: 'post',
             headers: {

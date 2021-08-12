@@ -102,16 +102,27 @@ router.get('/', async (req, res, next) => {
     context.books = await getBooksFromList(category);
 
     // if user's logged in, check which books are favorited (to add proper button)
-    if (req.user && req.user.favorites.length > 0) {
-        let userFavIsbns = req.user.favorites.map((book) => {
-            return book.isbn;
-        });
-        context.books.forEach((book) => {
-            if (userFavIsbns.includes(book.isbn)) {
-                book.favorite = 1;
-            }
-        });
+    if (context.user) {
 
+        try {
+            let response = await fetch(`${process.env.ISSUER_BASE_URL}/Users/${context.user.id}/Favorites`, {
+                  method: 'get',
+            });
+            let favorites = await response.json();
+            context.favorites = await favorites;
+
+            let userFavIsbns = await context.favorites.map((book) => {
+                return book.isbn;
+            });
+
+            context.books.forEach((book) => {
+                if (userFavIsbns.includes(book.isbn)) {
+                    book.favorite = 1;
+                }
+            });
+        } catch(err) {
+            console.log("Error getting favorites");
+        }
     }
 
     try {
